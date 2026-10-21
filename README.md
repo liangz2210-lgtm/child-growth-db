@@ -1,5 +1,7 @@
 # Child Growth Database
 
+> **[English version → README.en.md](README.en.md)**
+
 > 把「孩子在长大」这件事，从**流水账**变成**可分析的矩阵**，并让每一个判断都能被数据推翻。
 
 一个纯本地的个人成长数据库框架。Markdown + JSONL + Python，无依赖、无云服务、可 git 版本化。
@@ -147,7 +149,8 @@ cat derived/gaps.md
 ## 目录
 
 ```
-├── README.md              本文件
+├── README.md              本文件（中文）
+├── README.en.md           英文版
 ├── OVERVIEW.md            方法概览（可单独分享）
 ├── SPEC.md                服务方案与规范（含版本演进）
 ├── MATRIX.md              矩阵框架 + 20 条规范条款
