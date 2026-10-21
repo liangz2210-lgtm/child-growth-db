@@ -1,0 +1,18 @@
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+
+# ---- 真实个人数据不入库 ----
+# 只保留示例事件；自己的数据请用 *-live.jsonl 命名或放在私有分支
+events/*-live.jsonl
+events/legacy/
+
+# 个体档案与模型不公开（保留模板）
+profile/*.md
+!profile/*.template.md
+model/*.md
+!model/*.template.md
+
+# 回顾与判断属个人内容
+reviews/

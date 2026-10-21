@@ -1,0 +1,153 @@
+{
+  "version": "1.0",
+  "updated": "2026-10-22",
+  "note": "矩阵的列轴。四层：域 → 维 → 指标。resolution 表示该维度的最低采样分辨率。",
+  "domains": [
+    {
+      "id": "P",
+      "name": "生理基座",
+      "children": [
+        {
+          "id": "S1", "name": "睡眠", "resolution": "T0",
+          "metrics": [
+            {"id": "sleep.bedtime", "unit": "HH:MM", "kind": "time"},
+            {"id": "sleep.waketime", "unit": "HH:MM", "kind": "time"},
+            {"id": "sleep.nap_h", "unit": "h", "kind": "num", "range": [0, 8]},
+            {"id": "sleep.night_h", "unit": "h", "kind": "derived"},
+            {"id": "sleep.sd", "unit": "min", "kind": "derived"}
+          ]
+        },
+        {
+          "id": "S2", "name": "营养", "resolution": "T2",
+          "metrics": [
+            {"id": "nutr.variety_n", "unit": "种", "kind": "num", "range": [0, 30]},
+            {"id": "nutr.milk_ml", "unit": "ml", "kind": "num", "range": [0, 1000]},
+            {"id": "nutr.mealtime_regular", "unit": "天/周", "kind": "num", "range": [0, 7]}
+          ]
+        },
+        {
+          "id": "S3", "name": "健康", "resolution": "T2",
+          "metrics": [
+            {"id": "health.ht_cm", "unit": "cm", "kind": "num", "range": [40, 140]},
+            {"id": "health.wt_kg", "unit": "kg", "kind": "num", "range": [5, 40]},
+            {"id": "health.illness_n", "unit": "次", "kind": "num", "range": [0, 10]},
+            {"id": "health.vax_ontime", "unit": "bool", "kind": "bool"}
+          ]
+        },
+        {
+          "id": "S4", "name": "安全", "resolution": "T1",
+          "metrics": [
+            {"id": "safe.hazard_check", "unit": "项通过", "kind": "num", "range": [0, 20]},
+            {"id": "safe.incident_n", "unit": "次", "kind": "num", "range": [0, 20]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "name": "发展",
+      "children": [
+        {
+          "id": "D1", "name": "运动", "resolution": "T2",
+          "metrics": [
+            {"id": "motor.gross", "unit": "里程碑项", "kind": "count"},
+            {"id": "motor.fine", "unit": "里程碑项", "kind": "count"}
+          ]
+        },
+        {
+          "id": "D2", "name": "语言", "resolution": "T1",
+          "metrics": [
+            {"id": "lang.mlu", "unit": "词", "kind": "num", "range": [1, 20]},
+            {"id": "lang.words", "unit": "个", "kind": "num", "range": [0, 2000]},
+            {"id": "lang.questions_n", "unit": "次/周", "kind": "num", "range": [0, 500]},
+            {"id": "lang.comprehension", "unit": "步指令", "kind": "num", "range": [1, 3]}
+          ]
+        },
+        {
+          "id": "D3", "name": "认知", "resolution": "T2",
+          "metrics": [
+            {"id": "cog.pretend", "unit": "有/无", "kind": "bool"},
+            {"id": "cog.match", "unit": "类", "kind": "num", "range": [0, 10]},
+            {"id": "cog.number", "unit": "数到", "kind": "num", "range": [0, 20]}
+          ]
+        },
+        {
+          "id": "D4", "name": "情绪调节", "resolution": "T0",
+          "metrics": [
+            {"id": "emo.tantrum_lvl", "unit": "档", "kind": "ord", "range": [0, 3]},
+            {"id": "emo.recovery_min", "unit": "min", "kind": "num", "range": [0, 120]},
+            {"id": "emo.self_soothe", "unit": "bool", "kind": "bool"}
+          ]
+        },
+        {
+          "id": "D5", "name": "社会关系", "resolution": "T2",
+          "metrics": [
+            {"id": "soc.parallel", "unit": "有/无", "kind": "bool"},
+            {"id": "soc.turn_taking", "unit": "有/无", "kind": "bool"},
+            {"id": "soc.empathy", "unit": "有/无", "kind": "bool"}
+          ]
+        },
+        {
+          "id": "D6", "name": "生活自理", "resolution": "T1",
+          "metrics": [
+            {"id": "care.toilet_success", "unit": "次", "kind": "num", "range": [0, 20]},
+            {"id": "care.toilet_accident", "unit": "次", "kind": "num", "range": [0, 20]},
+            {"id": "care.self_feed", "unit": "0-3", "kind": "ord", "range": [0, 3]},
+            {"id": "care.dress", "unit": "0-3", "kind": "ord", "range": [0, 3]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "E",
+      "name": "环境输入",
+      "children": [
+        {
+          "id": "E1", "name": "互动质量", "resolution": "T1",
+          "metrics": [
+            {"id": "inter.serve_return_days", "unit": "天/周", "kind": "num", "range": [0, 7]},
+            {"id": "inter.read_days", "unit": "天/周", "kind": "num", "range": [0, 7]}
+          ]
+        },
+        {
+          "id": "E2", "name": "照护一致性", "resolution": "T1",
+          "metrics": [
+            {"id": "cons.rule_alignment", "unit": "0-3", "kind": "ord", "range": [0, 3]}
+          ]
+        },
+        {
+          "id": "E3", "name": "屏幕与活动", "resolution": "T1",
+          "metrics": [
+            {"id": "scr.min", "unit": "min/日", "kind": "num", "range": [0, 600]},
+            {"id": "scr.type", "unit": "enum", "kind": "enum", "enum": ["interactive", "passive", "none"]},
+            {"id": "act.outdoor_min", "unit": "min/日", "kind": "num", "range": [0, 600]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M",
+      "name": "元能力（观察型，只记计数与证据，不打分）",
+      "children": [
+        {"id": "M1", "name": "提问力", "resolution": "T1", "metrics": [
+          {"id": "meta.question_n", "unit": "次/周", "kind": "count"},
+          {"id": "meta.question_depth", "unit": "追问层数", "kind": "num", "range": [0, 5]}]},
+        {"id": "M2", "name": "意图保持", "resolution": "T1", "metrics": [
+          {"id": "meta.return_to_goal", "unit": "次/周", "kind": "count"}]},
+        {"id": "M3", "name": "判断力", "resolution": "T1", "metrics": [
+          {"id": "meta.detect_inconsistency", "unit": "次/周", "kind": "count"}]},
+        {"id": "M4", "name": "迁移力", "resolution": "T1", "metrics": [
+          {"id": "meta.cross_context", "unit": "次/周", "kind": "count"}]},
+        {"id": "M5", "name": "注意自主", "resolution": "T1", "metrics": [
+          {"id": "meta.focus_min", "unit": "min", "kind": "num", "range": [0, 120]},
+          {"id": "meta.resume_after_interrupt", "unit": "bool", "kind": "bool"}]},
+        {"id": "M6", "name": "人际深度", "resolution": "T1", "metrics": [
+          {"id": "meta.initiate_share", "unit": "次/周", "kind": "count"},
+          {"id": "meta.comfort_other", "unit": "次/周", "kind": "count"}]},
+        {"id": "M7", "name": "身体能力", "resolution": "T1", "metrics": [
+          {"id": "meta.outdoor_h", "unit": "h/日", "kind": "num", "range": [0, 12]},
+          {"id": "meta.free_play_h", "unit": "h/日", "kind": "num", "range": [0, 12]}]}
+      ]
+    }
+  ]
+}

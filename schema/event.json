@@ -1,0 +1,119 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GrowthEvent v2",
+  "description": "L0 事件流最小单元。v2 修订：拆分 channel/evidence_type、加 observed/recorded_at/period/corrects/retract、删 age_days（改由脚本算）、dim 拆主副、新增 intervention 类型。",
+  "type": "object",
+  "required": [
+    "id", "schema_version", "ts", "recorded_at", "ts_precision",
+    "type", "dim_primary", "text", "observer",
+    "channel", "evidence_type", "observed"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^evt-[0-9]{8}-[0-9]{4}$",
+      "description": "evt-YYYYMMDD-NNNN"
+    },
+    "schema_version": { "const": 2 },
+
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "事件发生时刻。ISO8601 带时区"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "录入时刻。区分'什么时候发生'与'什么时候被说出'"
+    },
+    "ts_precision": {
+      "enum": ["minute", "day", "week"],
+      "description": "时间精度。日粒度用 day；周项用 week 并填 period"
+    },
+    "period": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-W[0-9]{2}$",
+      "description": "周粒度必填，如 2026-W43。派生按 period 聚合，不按 ts"
+    },
+
+    "type": {
+      "enum": ["measurement", "observation", "milestone", "context", "intervention"],
+      "description": "intervention 记录'干预是否执行'，用于假设回验"
+    },
+
+    "dim_primary": {
+      "enum": ["S1", "S2", "S3", "S4", "D1", "D2", "D3", "D4", "D5", "D6", "E1", "E2", "E3", "M1", "M2", "M3", "M4", "M5", "M6", "M7"],
+      "description": "主归属维度，单值"
+    },
+    "dim_secondary": {
+      "type": "array",
+      "items": {
+        "enum": ["S1", "S2", "S3", "S4", "D1", "D2", "D3", "D4", "D5", "D6", "E1", "E2", "E3", "M1", "M2", "M3", "M4", "M5", "M6", "M7"]
+      },
+      "description": "副标签，不得包含 dim_primary"
+    },
+
+    "text": {
+      "type": "string",
+      "minLength": 2,
+      "description": "原话或原始描述。禁止只写结论——可追溯性的唯一保证"
+    },
+    "observer": {
+      "enum": ["p", "g", "o", "?"],
+      "description": "p=父母 g=照护者B o=其他 ?=不明"
+    },
+
+    "channel": {
+      "enum": ["chat", "manual", "import"],
+      "description": "怎么进来的（渠道）"
+    },
+    "evidence_type": {
+      "enum": ["obs", "report", "test", "derived"],
+      "description": "证据类型：obs=直接观察 report=家长自报 test=外部测评 derived=派生"
+    },
+    "confidence": { "enum": ["high", "medium", "low"], "default": "medium" },
+
+    "observed": {
+      "type": "boolean",
+      "description": "三态语义：无事件=没问；observed=true 且 value=0=问了，确实为零；observed=false=问了但无法确定"
+    },
+
+    "metric": { "type": "string", "description": "measurement 且 observed=true 时必填，须在 indicators.md 有定义" },
+    "value": { "type": ["string", "number"] },
+    "unit": { "type": "string" },
+
+    "corrects": { "type": "string", "description": "被更正的事件 id。不覆盖原值，追加新版本" },
+    "retract": { "type": "boolean", "description": "true 表示撤回该事件，derive 不再采用" },
+
+    "hypothesis_id": { "type": "string", "description": "intervention 必填，如 H1" },
+    "action": { "type": "string", "description": "intervention 必填：做了什么" },
+    "started": { "type": "string", "format": "date", "description": "intervention 必填：开始日期" },
+    "followed": {
+      "enum": ["yes", "partial", "no"],
+      "description": "intervention 必填：是否照做。回验时先看这个，再看指标"
+    },
+
+    "extractor_version": { "type": "string", "description": "抽取器版本，用于追踪偏差" },
+    "note": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "ts_precision": { "const": "week" } }, "required": ["ts_precision"] },
+      "then": { "required": ["period"] }
+    },
+    {
+      "if": { "properties": { "type": { "const": "intervention" } }, "required": ["type"] },
+      "then": { "required": ["hypothesis_id", "action", "started", "followed"] }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": { "const": "measurement" },
+          "observed": { "const": true }
+        },
+        "required": ["type", "observed"]
+      },
+      "then": { "required": ["metric", "value", "unit"] }
+    }
+  ]
+}

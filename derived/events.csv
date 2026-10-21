@@ -1,0 +1,8 @@
+﻿id,ts,date,period,age_days,type,dim_primary,dim_secondary,text,observer,channel,evidence_type,confidence,observed,metric,value,unit,note
+evt-20260115-0001,2026-01-15T06:40:00+08:00,2026-01-15,,,measurement,S1,,早上六点四十左右醒,p,chat,report,high,True,sleep.waketime,06:40,HH:MM,example
+evt-20260115-0004,2026-01-15T10:05:00+08:00,2026-01-15,,,observation,D2,M1,指着窗外说：太阳出来了，可以出去玩吗——第一次用「可以……吗」的形式提问,p,chat,obs,high,True,,,,example；这是合成示例，非真实记录
+evt-20260115-0003,2026-01-15T13:20:00+08:00,2026-01-15,,,measurement,S1,,午睡约两小时,p,chat,report,medium,True,sleep.nap_h,2.0,h,example；est
+evt-20260115-0005,2026-01-15T15:40:00+08:00,2026-01-15,,,observation,D6,,要尿尿时会主动说，但偶尔说完就来不及了,p,chat,obs,high,True,,,,example
+evt-20260115-0006,2026-01-15T20:00:00+08:00,2026-01-15,,,context,E2,,工作日由祖辈照护，周末由父母照护，两边的作息安排不完全一致,p,chat,obs,high,True,,,,example
+evt-20260115-0007,2026-01-15T21:00:00+08:00,2026-01-15,,,intervention,S1,,固定睡前流程顺序：洗澡-刷牙-绘本-关灯，连续执行五天,p,chat,obs,high,True,,,,example；第 3、4 天因外出未执行
+evt-20260115-0002,2026-01-15T21:10:00+08:00,2026-01-15,,,measurement,S1,,九点十分熄灯，比上周晚了约二十分钟,p,chat,report,high,True,sleep.bedtime,21:10,HH:MM,example
