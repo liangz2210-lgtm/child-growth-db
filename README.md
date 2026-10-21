@@ -65,24 +65,51 @@ T3 每季  → 轨迹、变化点、假设回验
 ## 快速开始
 
 ```bash
-git clone <this-repo>
+git clone https://github.com/liangz2210-lgtm/child-growth-db.git
 cd child-growth-db
 
-# 1. 看校验器能拦住哪些错误（14 个故意写坏的样例）
-python3 scripts/validate.py --fixtures
-
-# 2. 校验示例事件流
-python3 scripts/validate.py
-
-# 3. 派生 L2 聚合（日/周）
-python3 scripts/derive.py
-
-# 4. 生成检视视图与缺口报告
-python3 scripts/view.py
-cat derived/gaps.md
+# 一条命令完成初始化：建 profile、自检、告诉你下一步做什么
+python3 scripts/init.py
 ```
 
-无第三方依赖，Python 3.9+ 即可。
+`init.py` 会做三件事：从模板创建 `profile/child-profile.md`、跑一遍校验/派生/视图、按缺口优先级告诉你要先补哪些维度。
+
+**然后填一个生日。** `profile/child-profile.md` 第 3 行：
+
+```yaml
+birthday: 2024-01-01   # ← 改成真实生日，所有年龄都由它算
+```
+
+填完之后 `age_days` 才会有值——**不填就一直是空，因为本库不猜。**
+
+<details>
+<summary>想先看看工具能干什么（不用初始化）</summary>
+
+```bash
+python3 scripts/validate.py --fixtures   # 看校验器能拦住哪 14 类错误
+python3 scripts/validate.py              # 校验示例事件流
+python3 scripts/derive.py                # L0 → L2 派生
+python3 scripts/view.py                  # 热力图 / 状态 / 缺口报告
+cat derived/gaps.md
+```
+</details>
+
+**无第三方依赖**，Python 3.9+ 即可，不需要 pip install。
+
+### 跑完发现"全是超期"，不是坏了
+
+`events/2026-01-example.jsonl` 是 2026 年 1 月的**合成示例**。今天去跑 `gaps.md`，它会算出每个维度都静默了两百多天，于是全标"超期"。
+
+这是对的——**它老老实实告诉你：这些格子很久没数据了。** 你删掉示例、换成自己的事件，状态就正常了。
+
+### 文件从哪开始读
+
+| 你是 | 先读 |
+|---|---|
+| 想搞清楚这套东西的设计 | [`CRITIQUE.md`](CRITIQUE.md)（五轮重构的自我批判） |
+| 想直接用 | `python3 scripts/init.py` |
+| 让 AI Agent 接手 | [`AGENTS.md`](AGENTS.md) |
+| 想改结构 | [`MATRIX.md`](MATRIX.md) + [`schema/dimension-tree.json`](schema/dimension-tree.json) |
 
 ---
 
@@ -133,7 +160,8 @@ cat derived/gaps.md
 │   ├── dimensions.md      维度定义与阶段权重矩阵
 │   └── indicators.md      指标字典
 ├── scripts/
-│   ├── validate.py        校验器（含 fixtures 自测）
+│   ├── init.py            首次使用引导（建 profile、自检、给下一步）
+│   ├── validate.py        校验器（含 14 个 fixtures 自测）
 │   ├── derive.py          L0 → L2 派生（含血缘 source_event_ids）
 │   └── view.py            热力图 / 状态 / 缺口报告
 ├── events/
